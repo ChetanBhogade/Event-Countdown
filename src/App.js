@@ -12,6 +12,7 @@ function App() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [eventName, setEventName] = useState(null);
   const [timer, setTimer] = useState({});
+  const [stopInterval, setStopInterval] = useState(false);
 
   const handleCountDown = (date) => {
     let eventDate = new Date(date);
@@ -24,14 +25,18 @@ function App() {
         position: toast.POSITION.TOP_CENTER,
         autoClose: false,
       });
+      setStopInterval(true);
     }
   };
 
   useEffect(() => {
     if (selectedDate) {
-      setInterval(() => {
+      var id = setInterval(() => {
         handleCountDown(selectedDate);
       }, 1000);
+    }
+    if (stopInterval) {
+      clearInterval(id)
     }
   });
 
