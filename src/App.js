@@ -3,8 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import { toast } from "react-toastify";
 
+toast.configure();
 function App() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [eventName, setEventName] = useState(null);
@@ -16,13 +19,20 @@ function App() {
     let timespan = eventDate - today;
     if (timespan > 0) {
       setTimer(calculateTime(timespan));
+    } else {
+      toast.success("Event Countdown Completed Successfully", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: false,
+      });
     }
   };
 
   useEffect(() => {
-    setInterval(() => {
-      handleCountDown(selectedDate);
-    }, 1000);
+    if (selectedDate) {
+      setInterval(() => {
+        handleCountDown(selectedDate);
+      }, 1000);
+    }
   });
 
   const calculateTime = (milliSeconds) => {
